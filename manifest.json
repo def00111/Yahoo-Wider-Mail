@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Yahoo! Wider Mail",
+  "version": "1.4",
+  "description": "Various improvements/fixes for Yahoo Mail",
+  "author": "def00111",
+  "icons": {
+    "64": "icons/yahoo-64.png",
+    "128": "icons/yahoo-128.png"
+  },
+  "action": {
+    "default_icon": {
+       "64": "icons/yahoo-64.png"
+    },
+    "default_title": "Yahoo! Wider Mail"
+  },
+  "background": {
+    "scripts": ["bg.js"]
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "host_permissions": [
+    "https://*.mail.yahoo.com/"
+  ],
+  "permissions": [
+    "scripting",
+    "storage",
+    "declarativeNetRequest"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{c47bac34-849a-4d28-be41-549b2c76c64e}",
+      "strict_min_version": "129.0"
+    }
+  }
+}

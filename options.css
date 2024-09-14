@@ -1,0 +1,22 @@
+body {
+  margin: 0 4px 8px 4px;
+}
+
+label, input, span#saveHint {
+  vertical-align: middle;
+}
+
+.hidden {
+  display: none;
+}
+
+#optionsForm > div:first-child {
+  user-select: none;
+  -webkit-user-select: none; /* Safari */
+  margin-bottom: 4px;
+}
+
+#saveHint {
+  font-size: 14px;
+  color: green;
+}
