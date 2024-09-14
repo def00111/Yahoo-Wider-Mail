@@ -1,1 +1,1 @@
-# Yahoo! Wider Mail issue tracker only
+# Yahoo! Wider Mail
