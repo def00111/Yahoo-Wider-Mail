@@ -139,8 +139,25 @@
       resizeObserver3.observe(section);
       resizeObserver3._observing = true;
     }
+    const count = $("announcedSelectionCount");
+    if (count) {
+      if (observer3._observing) {
+        observer3.disconnect();
+        observer3._observing = false;
+      }
+      observer3.observe(count, { childList: true });
+      observer3._observing = true;
+    }
   });
   observer2._observing = false;
+
+  const observer3 = new MutationObserver(() => {
+    const buttons = container.querySelectorAll(`div[data-test-id="message-toolbar"] div.cZW7ROP_A button`);
+    for (const button of buttons) {
+      button.disabled = !$("announcedSelectionCount").hasChildNodes();
+    }
+  });
+  observer3._observing = false;
 
   const resizeObserver = new ResizeObserver(([entry]) => {
     const { height } = entry.contentRect;
@@ -207,6 +224,11 @@
     if (header && !resizeObserver2._observing) {
       resizeObserver2.observe(header);
       resizeObserver2._observing = true;
+    }
+    const count = $("announcedSelectionCount");
+    if (count && !observer3._observing) {
+      observer3.observe(count, { childList: true });
+      observer3._observing = true;
     }
   };
 
