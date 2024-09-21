@@ -153,8 +153,12 @@
 
   const observer3 = new MutationObserver(() => {
     const buttons = container.querySelectorAll(`div[data-test-id="message-toolbar"] div.cZW7ROP_A button`);
+    if (!buttons.length) {
+      return;
+    }
+    const hasChildren = $("announcedSelectionCount").childElementCount > 0;
     for (const button of buttons) {
-      button.disabled = !$("announcedSelectionCount").hasChildNodes();
+      button.disabled = !hasChildren;
     }
   });
   observer3._observing = false;
