@@ -1,5 +1,6 @@
 body {
   margin: 0 4px 8px 4px;
+  overflow: hidden;
 }
 
 label, input, span#saveHint {

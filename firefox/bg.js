@@ -63,6 +63,7 @@ chrome.action.onClicked.addListener(async () => {
 });
 
 chrome.storage.sync.onChanged.addListener(async changes => {
+  changes.openInFullWide.oldValue ??= false;
   if (changes.openInFullWide.newValue != changes.openInFullWide.oldValue) {
     const res = await chrome.storage.session.get({
       enabled: true
@@ -92,7 +93,13 @@ async function init() {
   reloadTabs();
 }
 
-// This is needed, so the service worker starts correctly.
+// This is needed, so the background script starts correctly on startup.
 chrome.runtime.onStartup.addListener(() => {});
-chrome.runtime.onInstalled.addListener(() => {});
+
+chrome.runtime.onInstalled.addListener(async details => {
+  if (details.reason == "install") {
+    await chrome.runtime.openOptionsPage();
+  }
+});
+
 init();
