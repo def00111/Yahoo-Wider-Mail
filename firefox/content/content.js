@@ -3,10 +3,11 @@
 
   const sel1 = `div[data-test-id="mail-right-rail"]:has(div[data-test-id="gam-iframe"]:only-child) div[data-test-id="comms-properties-bar"]`;
   const sel2 = `#app > section[role="banner"]`;
+  const sel3 = `div[data-test-id="message-toolbar"] button[data-test-id="checkbox"]`;
 
   let container = null;
 
-  const fireResizeEvent = () => window.requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+  const fireResizeEvent = () => requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
 
   const $ = id => document.getElementById(id);
 
@@ -139,26 +140,30 @@
       resizeObserver3.observe(section);
       resizeObserver3._observing = true;
     }
-    const count = $("announcedSelectionCount");
-    if (count) {
+    const button = container.querySelector(sel3);
+    if (button) {
       if (observer3._observing) {
         observer3.disconnect();
         observer3._observing = false;
       }
-      observer3.observe(count, { childList: true });
+      observer3.observe(button, {
+        attributeFilter: ["aria-checked"]
+      });
       observer3._observing = true;
     }
   });
   observer2._observing = false;
 
-  const observer3 = new MutationObserver(() => {
-    const buttons = container.querySelectorAll(`div[data-test-id="message-toolbar"] div.cZW7ROP_A button`);
+  const observer3 = new MutationObserver(([m]) => {
+    const buttons = container.querySelectorAll(
+      `div[data-test-id="message-toolbar"] div.cZW7ROP_A button`
+    );
     if (!buttons.length) {
       return;
     }
-    const hasChildren = $("announcedSelectionCount").childElementCount > 0;
+    const ariaChecked = m.target.getAttribute("aria-checked");
     for (const button of buttons) {
-      button.disabled = !hasChildren;
+      button.disabled = ariaChecked == "false";
     }
   });
   observer3._observing = false;
@@ -174,14 +179,10 @@
   });
   resizeObserver._observing = false;
 
-  const resizeObserver2 = new ResizeObserver(() => {
-    fireResizeEvent();
-  });
+  const resizeObserver2 = new ResizeObserver(fireResizeEvent);
   resizeObserver2._observing = false;
 
-  const resizeObserver3 = new ResizeObserver(() => {
-    fireResizeEvent();
-  });
+  const resizeObserver3 = new ResizeObserver(fireResizeEvent);
   resizeObserver3._observing = false;
 
   const run = () => {
@@ -208,6 +209,13 @@
         observer2.observe(container, { childList: true });
         observer2._observing = true;
       }
+      const button = container.querySelector(sel3);
+      if (button && !observer3._observing) {
+        observer3.observe(button, {
+          attributeFilter: ["aria-checked"]
+        });
+        observer3._observing = true;
+      }
     }
     const wrap = $("ybar-inner-wrap");
     if (wrap && !$("ywm-style2")) {
@@ -229,17 +237,12 @@
       resizeObserver2.observe(header);
       resizeObserver2._observing = true;
     }
-    const count = $("announcedSelectionCount");
-    if (count && !observer3._observing) {
-      observer3.observe(count, { childList: true });
-      observer3._observing = true;
-    }
   };
 
   if (document.readyState != "loading") {
     run();
   }
-  document.onreadystatechange = () => run();
+  document.onreadystatechange = run;
 
   chrome.storage.sync.get({openInFullWide: false}).then(pref => {
     if (pref.openInFullWide) {
