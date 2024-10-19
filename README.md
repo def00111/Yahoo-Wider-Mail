@@ -1,1 +1,1 @@
-# Yahoo! Wider Mail
+# Wider mail view for Yahoo Mail
