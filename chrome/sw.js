@@ -33,6 +33,7 @@ function addSessionRule() {
 
 async function reloadTabs() {
   const tabs = await chrome.tabs.query({
+    discarded: false,
     url: "https://*.mail.yahoo.com/*",
   });
   for (const tab of tabs) {
@@ -40,15 +41,8 @@ async function reloadTabs() {
   }
 }
 
-function setTitle(enabled) {
-  let title = "";
-  const {name} = chrome.runtime.getManifest();
-  if (enabled) {
-    title = `${name}: Enabled`;
-  } else {
-    title = `${name}: Disabled`;
-  }
-  return chrome.action.setTitle({title});
+function setBadge(text) {
+  return chrome.action.setBadgeText({text});
 }
 
 chrome.action.onClicked.addListener(async () => {
@@ -64,7 +58,7 @@ chrome.action.onClicked.addListener(async () => {
     });
     enabled = false;
   }
-  await setTitle(enabled);
+  await setBadge(enabled ? "" : "off");
   await chrome.storage.session.set({enabled});
   reloadTabs();
 });
@@ -96,7 +90,6 @@ async function init() {
     await chrome.scripting.registerContentScripts([myScript]);
   }
   await addSessionRule();
-  await setTitle(true);
   reloadTabs();
 }
 
