@@ -1,19 +1,18 @@
 {
   "manifest_version": 3,
   "name": "Wider mail view for Yahoo Mail",
-  "version": "2.0",
+  "version": "2.2",
   "description": "Various improvements/fixes for Yahoo Mail",
   "author": "def00111",
   "minimum_chrome_version": "116",
   "icons": {
-    "64": "icons/icon-64.png",
-    "128": "icons/icon-128.png"
+    "64": "icons/expand-64.png",
+    "128": "icons/expand-128.png"
   },
   "action": {
     "default_icon": {
-       "64": "icons/icon-64.png"
-    },
-    "default_title": "Wider mail view for Yahoo Mail"
+       "64": "icons/expand-64.png"
+    }
   },
   "options_ui": {
     "page": "options.html",
