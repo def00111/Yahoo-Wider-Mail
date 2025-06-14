@@ -9,24 +9,22 @@
 
   const fireResizeEvent = () => requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
 
-  const $ = id => document.getElementById(id);
+  const $ = (sel, el = document) => el.querySelector(sel);
 
-  Object.defineProperty(String.prototype, 'minimize', {
-    value: function() {
-      let str = this.trim();
-      str = str.replace( /\/\*(?:(?!\*\/)[\s\S])*\*\/|[\r\n\t]+/g, '' );
-      // now all comments, newlines and tabs have been removed
-      str = str.replace( / {2,}/g, ' ' );
-      // now there are no more than single adjacent spaces left
-      str = str.replace( / ([{:}]) /g, '$1' );
-      str = str.replace( / ?\+ (?!\d)/g, '+' );
-      str = str.replace( /([:;,>~]) /g, '$1' );
-      str = str.replace( / ([!>])/g, '$1' );
-      return str;
-    }
-  });
+  CSS.minimize = str => {
+    str = str.trim();
+    str = str.replace( /\/\*(?:(?!\*\/)[\s\S])*\*\/|[\r\n\t]+/g, '' );
+    // now all comments, newlines and tabs have been removed
+    str = str.replace( / {2,}/g, ' ' );
+    // now there are no more than single adjacent spaces left
+    str = str.replace( / ([{:}]) /g, '$1' );
+    str = str.replace( / ?\+ (?!\d)/g, '+' );
+    str = str.replace( /([:;,>~]) /g, '$1' );
+    str = str.replace( / ([!>])/g, '$1' );
+    return str;
+  };
 
-  const cssText = ((a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) => `
+  const cssText = (({a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q}) => `
     ${a}:has(${b}):has(+ ${c} ${d} + ${e}),
     ${a}:has(> div > div[data-test-id]):has(+ ${c} ${e}:only-child) {
       border-right: none !important;
@@ -34,8 +32,7 @@
     ${a}:has(${b} > div${h}:not(.I_ZkbNhI)) + ${c}:has(${d} + ${e}) ${f},
     ${a}:has(div${h}.I_T) + ${c}:has(${e}:only-child) ${f},
     ${a}:has(${b}):has(div${h}.I_T) + ${c}:has(${d} + ${e}) ${f},
-    ${a}:has(> div > div > div > div:not(.I_ZnIF8Y) > ${i}) + ${c}:has(${e}:only-child) ${f}, /* d/subscriptions/ */
-    ${a}:has(> div > div > ${j} > div.I_T > div > ${i}) + ${c}:has(${e}:only-child) ${f} { /* d/search/ */
+    ${a}:has(> ${n}:not(.I_ZkbNhI) > div[data-test-id]) + ${c}:has(${e}:only-child) ${f} {
       background-color: transparent !important;
       border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
@@ -49,14 +46,14 @@
     ${a}:has(+ ${c} ${e}:only-child) div${g} {
       box-sizing: border-box;
     }
-    div${g} + div[data-test-id="mail-reader-toolbar"] > div${h} {
+    div:is(${g}, [data-test-id="travel-header"]) + div[data-test-id="mail-reader-toolbar"] > div${h} {
       max-width: none !important;
     }
-    ${a}:has(+ ${c} ${e}:only-child) div:is(${h}, ${g}, ${k}),
+    ${a}:has(+ ${c} ${e}:only-child) div:is(${h}, ${g}, ${k}, ${q}),
     ${a}:has(+ ${c} ${e}:only-child) > div > div > ${j} > div:not(${k}):has(> div > ${i}),
     ${a}:has(+ ${c} ${e}:only-child) > div > div > div:has(> div > ${i}),
     ${a}:has(+ ${c} ${e}:only-child) > ${n} > ${o} > ${p} > .compose-header div:is(${l}, ${m}),
-    ${a}:has(${b}):has(+ ${c} ${d} + ${e}) div:is(${h}, ${g}, ${k}),
+    ${a}:has(${b}):has(+ ${c} ${d} + ${e}) div:is(${h}, ${g}, ${k}, ${q}),
     ${a}:has(${b}):has(+ ${c} ${d} + ${e}) > div > div > ${j} > div:not(${k}):has(> div > ${i}),
     ${a}:has(${b}):has(+ ${c} ${d} + ${e}) > div > div > div:has(> div > ${i}),
     ${a}:has(${b}):has(+ ${c} ${d} + ${e}) > ${n} > ${o} > ${p} > .compose-header div:is(${l}, ${m}) {
@@ -80,29 +77,30 @@
         color: #fff !important;
       }
     }
-  `)(
-    "#mail-app-component", /* a */
-    `div[data-test-id="message-group-view"]`, /* b */
-    `div[data-test-id="mail-right-rail"]`, /* c */
-    `div[data-test-id="contact-card"]`, /* d */
-    `div[data-test-id="gam-iframe"]`, /* e */
-    `div[data-test-id="comms-properties-bar"]`, /* f */
-    `[data-test-id="search-header"]`, /* g */
-    `[data-test-id="message-toolbar"]`, /* h */
-    `div[data-test-id="popover-container"]`, /* i */
-    `div[data-test-id="mail-reader"]`, /* j */
-    `[data-test-id="photos-header"]`, /* k */
-    `[data-test-id="compose-header-top-bar"]`, /* l */
-    `[data-test-id="container-from"]`, /* m */
-    `div[data-test-id="mail-app-main-content"]`, /* n */
-    `div[data-test-id="compose-styler"]`, /* o */
-    `div[data-test-id="compose"]` /* p */
-  );
+  `)({
+    a: "#mail-app-component",
+    b: `div[data-test-id="message-group-view"]`,
+    c: `div[data-test-id="mail-right-rail"]`,
+    d: `div[data-test-id="contact-card"]`,
+    e: `div[data-test-id="gam-iframe"]`,
+    f: `div[data-test-id="comms-properties-bar"]`,
+    g: `[data-test-id="search-header"]`,
+    h: `[data-test-id="message-toolbar"]`,
+    i: `div[data-test-id="popover-container"]`,
+    j: `div[data-test-id="mail-reader"]`,
+    k: `[data-test-id="photos-header"]`,
+    l: `[data-test-id="compose-header-top-bar"]`,
+    m: `[data-test-id="container-from"]`,
+    n: `div[data-test-id="mail-app-main-content"]`,
+    o: `div[data-test-id="compose-styler"]`,
+    p: `div[data-test-id="compose"]`,
+    q: `[data-test-id="travel-heading"]`,
+  });
 
   const cssText2 = `${sel2} > div.H_3n1j3 { height: %height%px !important; }`;
 
   const addStyles = el => {
-    let styleEl = $("ywm-style1");
+    let styleEl = $("#ywm-style1", document.head);
     if (!styleEl) {
       styleEl = document.createElement("style");
       styleEl.id = "ywm-style1";
@@ -112,16 +110,16 @@
     const borderBottomWidth = parseFloat(style.borderBottomWidth);
     const width = parseInt(style.width, 10);
     styleEl.textContent = `:root { --ywm-comms-properties-bar-width: ${width + borderBottomWidth}px; }`;
-    if (!$("ywm-style3")) {
+    if (!$("#ywm-style3", document.head)) {
       const styleEl = document.createElement("style");
       styleEl.id = "ywm-style3";
-      styleEl.textContent = cssText.minimize();
+      styleEl.textContent = CSS.minimize(cssText);
       document.head.append(styleEl);
     }
   };
 
   const observer = new MutationObserver(() => {
-    const node = container.querySelector(sel1);
+    const node = $(sel1, container);
     if (node) {
       observer.disconnect();
       delete observer._observing;
@@ -131,7 +129,7 @@
   observer._observing = false;
 
   const observer2 = new MutationObserver(() => {
-    const section = container.querySelector(sel2);
+    const section = $(sel2, container);
     if (section) {
       if (resizeObserver3._observing) {
         resizeObserver3.disconnect();
@@ -140,7 +138,7 @@
       resizeObserver3.observe(section);
       resizeObserver3._observing = true;
     }
-    const button = container.querySelector(sel3);
+    const button = $(sel3, container);
     if (button) {
       if (observer3._observing) {
         observer3.disconnect();
@@ -163,7 +161,11 @@
     }
     const ariaChecked = m.target.getAttribute("aria-checked");
     for (const button of buttons) {
-      button.disabled = ariaChecked == "false";
+      if (ariaChecked == "false") {
+        button.disabled = true;
+      } else {
+        button.disabled = false;
+      }
     }
   });
   observer3._observing = false;
@@ -171,8 +173,8 @@
   const resizeObserver = new ResizeObserver(([entry]) => {
     const { height } = entry.contentRect;
     if (height > 0) {
-      const styleEl = $("ywm-style2");
-      styleEl.textContent = cssText2.replace("%height%", height).minimize();
+      const styleEl = $("#ywm-style2", document.head);
+      styleEl.textContent = CSS.minimize(cssText2.replace("%height%", height));
       resizeObserver.unobserve(entry.target);
       delete resizeObserver._observing;
     }
@@ -186,9 +188,9 @@
   resizeObserver3._observing = false;
 
   const run = () => {
-    container = container ?? $("mail-app-container");
+    container = container ?? $("#mail-app-container");
     if (container) {
-      const node = container.querySelector(sel1);
+      const node = $(sel1, container);
       if (node) {
         addStyles(node);
       } else {
@@ -200,7 +202,7 @@
           observer._observing = true;
         }
       }
-      const section = container.querySelector(sel2);
+      const section = $(sel2, container);
       if (section && !resizeObserver3._observing) {
         resizeObserver3.observe(section);
         resizeObserver3._observing = true;
@@ -209,7 +211,7 @@
         observer2.observe(container, { childList: true });
         observer2._observing = true;
       }
-      const button = container.querySelector(sel3);
+      const button = $(sel3, container);
       if (button && !observer3._observing) {
         observer3.observe(button, {
           attributeFilter: ["aria-checked"]
@@ -217,14 +219,14 @@
         observer3._observing = true;
       }
     }
-    const wrap = $("ybar-inner-wrap");
-    if (wrap && !$("ywm-style2")) {
+    const wrap = $("#ybar-inner-wrap");
+    if (wrap && !$("#ywm-style2", document.head)) {
       const styleEl = document.createElement("style");
       styleEl.id = "ywm-style2";
       document.head.append(styleEl);
       const { height } = wrap.getBoundingClientRect();
       if (height > 0) {
-        styleEl.textContent = cssText2.replace("%height%", height).minimize();
+        styleEl.textContent = CSS.minimize(cssText2.replace("%height%", height));
       } else {
         if (!resizeObserver._observing) {
           resizeObserver.observe(wrap);
@@ -232,7 +234,7 @@
         }
       }
     }
-    const header = $("norrin-ybar-header");
+    const header = $("#norrin-ybar-header");
     if (header && !resizeObserver2._observing) {
       resizeObserver2.observe(header);
       resizeObserver2._observing = true;
