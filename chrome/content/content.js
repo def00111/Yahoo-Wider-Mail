@@ -11,64 +11,64 @@
 
   const $ = (sel, el = document) => el.querySelector(sel);
 
-  CSS.minimize = str => {
-    str = str.trim();
-    str = str.replace( /\/\*(?:(?!\*\/)[\s\S])*\*\/|[\r\n\t]+/g, '' );
+  CSS.minimize = s => {
+    s = s.trim();
+    s = s.replace( /\/\*(?:(?!\*\/)[\s\S])*\*\/|[\r\n\t]+/g, '' );
     // now all comments, newlines and tabs have been removed
-    str = str.replace( / {2,}/g, ' ' );
+    s = s.replace( / {2,}/g, ' ' );
     // now there are no more than single adjacent spaces left
-    str = str.replace( / ([{:}]) /g, '$1' );
-    str = str.replace( / ?\+ (?!\d)/g, '+' );
-    str = str.replace( /([:;,>~]) /g, '$1' );
-    str = str.replace( / ([!>])/g, '$1' );
-    return str;
+    s = s.replace( / ([{:}]) /g, '$1' );
+    s = s.replace( / ?\+ (?!\d)/g, '+' );
+    s = s.replace( /([:;,>~]) /g, '$1' );
+    s = s.replace( / ([!>])/g, '$1' );
+    return s;
   };
 
-  const cssText = (({a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q}) => `
-    ${a}:has(${b}):has(+ ${c} ${d} + ${e}),
-    ${a}:has(> div > div[data-test-id]):has(+ ${c} ${e}:only-child) {
+  const cssText = (o => `
+    ${o.a}:has(${o.b}):has(+ ${o.c} ${o.d} + ${o.e}),
+    ${o.a}:has(> div > div[data-test-id]):has(+ ${o.c} ${o.e}:only-child) {
       border-right: none !important;
     }
-    ${a}:has(${b} > div${h}:not(.I_ZkbNhI)) + ${c}:has(${d} + ${e}) ${f},
-    ${a}:has(div${h}.I_T) + ${c}:has(${e}:only-child) ${f},
-    ${a}:has(${b}):has(div${h}.I_T) + ${c}:has(${d} + ${e}) ${f},
-    ${a}:has(> ${n}:not(.I_ZkbNhI) > div[data-test-id]) + ${c}:has(${e}:only-child) ${f} {
+    ${o.a}:has(${o.b} > div${o.h}:not(.I_ZkbNhI)) + ${o.c}:has(${o.d} + ${o.e}) ${o.f},
+    ${o.a}:has(div${o.h}.I_T) + ${o.c}:has(${o.e}:only-child) ${o.f},
+    ${o.a}:has(${o.b}):has(div${o.h}.I_T) + ${o.c}:has(${o.d} + ${o.e}) ${o.f},
+    ${o.a}:has(> ${o.n}:not(.I_ZkbNhI) > div[data-test-id]) + ${o.c}:has(${o.e}:only-child) ${o.f} {
       background-color: transparent !important;
       border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
-    ${a}:has(${b}) + ${c}:has(${d} + ${e}) ${f},
-    ${a}:has(> div > div[data-test-id]) + ${c}:has(${e}:only-child) ${f} {
+    ${o.a}:has(${o.b}) + ${o.c}:has(${o.d} + ${o.e}) ${o.f},
+    ${o.a}:has(> div > div[data-test-id]) + ${o.c}:has(${o.e}:only-child) ${o.f} {
       border-left: 1px solid #e0e4e9;
       position: absolute;
       right: 0;
     }
-    ${a}:has(${b}):has(+ ${c} ${d} + ${e}) div${g},
-    ${a}:has(+ ${c} ${e}:only-child) div${g} {
+    ${o.a}:has(${o.b}):has(+ ${o.c} ${o.d} + ${o.e}) div${o.g},
+    ${o.a}:has(+ ${o.c} ${o.e}:only-child) div${o.g} {
       box-sizing: border-box;
     }
-    div:is(${g}, [data-test-id="travel-header"]) + div[data-test-id="mail-reader-toolbar"] > div${h} {
+    div:is(${o.g}, [data-test-id="travel-header"]) + div[data-test-id="mail-reader-toolbar"] > div${o.h} {
       max-width: none !important;
     }
-    ${a}:has(+ ${c} ${e}:only-child) div:is(${h}, ${g}, ${k}, ${q}),
-    ${a}:has(+ ${c} ${e}:only-child) > div > div > ${j} > div:not(${k}):has(> div > ${i}),
-    ${a}:has(+ ${c} ${e}:only-child) > div > div > div:has(> div > ${i}),
-    ${a}:has(+ ${c} ${e}:only-child) > ${n} > ${o} > ${p} > .compose-header div:is(${l}, ${m}),
-    ${a}:has(${b}):has(+ ${c} ${d} + ${e}) div:is(${h}, ${g}, ${k}, ${q}),
-    ${a}:has(${b}):has(+ ${c} ${d} + ${e}) > div > div > ${j} > div:not(${k}):has(> div > ${i}),
-    ${a}:has(${b}):has(+ ${c} ${d} + ${e}) > div > div > div:has(> div > ${i}),
-    ${a}:has(${b}):has(+ ${c} ${d} + ${e}) > ${n} > ${o} > ${p} > .compose-header div:is(${l}, ${m}) {
+    ${o.a}:has(+ ${o.c} ${o.e}:only-child) div:is(${o.h}, ${o.g}, ${o.k}, ${o.q}),
+    ${o.a}:has(+ ${o.c} ${o.e}:only-child) > div > div > ${o.j} > div:not(${o.k}):has(> div > ${o.i}),
+    ${o.a}:has(+ ${o.c} ${o.e}:only-child) > div > div > div:has(> div > ${o.i}),
+    ${o.a}:has(+ ${o.c} ${o.e}:only-child) > ${o.n} > ${o.o} > ${o.p} > .compose-header div:is(${o.l}, ${o.m}),
+    ${o.a}:has(${o.b}):has(+ ${o.c} ${o.d} + ${o.e}) div:is(${o.h}, ${o.g}, ${o.k}, ${o.q}),
+    ${o.a}:has(${o.b}):has(+ ${o.c} ${o.d} + ${o.e}) > div > div > ${o.j} > div:not(${o.k}):has(> div > ${o.i}),
+    ${o.a}:has(${o.b}):has(+ ${o.c} ${o.d} + ${o.e}) > div > div > div:has(> div > ${o.i}),
+    ${o.a}:has(${o.b}):has(+ ${o.c} ${o.d} + ${o.e}) > ${o.n} > ${o.o} > ${o.p} > .compose-header div:is(${o.l}, ${o.m}) {
       max-width: calc(100% - var(--ywm-comms-properties-bar-width));
     }
-    ${a}:has(+ ${c} ${e}:only-child) > div > div > div > div.R_qc:has(> ${i}),
-    ${a}:has(${b}):has(+ ${c} ${d} + ${e}) > div > div > div > div.R_qc:has(> ${i}) { /* d/subscriptions/ */
+    ${o.a}:has(+ ${o.c} ${o.e}:only-child) > div > div > div > div.R_qc:has(> ${o.i}),
+    ${o.a}:has(${o.b}):has(+ ${o.c} ${o.d} + ${o.e}) > div > div > div > div.R_qc:has(> ${o.i}) { /* d/subscriptions/ */
       right: calc(var(--ywm-comms-properties-bar-width) + 20px);
     }
-    ${a}:has(> ${n} > ${o} > ${p} > .compose-header) + ${c}:has(${e}:only-child) ${f}:not(.I_ZkbNhI),
-    ${a}:has(> ${n}.I_ZkbNhI > div[data-test-id]) + ${c}:has(${e}:only-child) ${f}:not(.I_ZkbNhI),
-    ${a}:has(${b}):has(> ${n}.I_ZkbNhI > div[data-test-id]) + ${c}:has(${d} + ${e}) ${f}:not(.I_ZkbNhI) {
+    ${o.a}:has(> ${o.n} > ${o.o} > ${o.p} > .compose-header) + ${o.c}:has(${o.e}:only-child) ${o.f}:not(.I_ZkbNhI),
+    ${o.a}:has(> ${o.n}.I_ZkbNhI > div[data-test-id]) + ${o.c}:has(${o.e}:only-child) ${o.f}:not(.I_ZkbNhI),
+    ${o.a}:has(${o.b}):has(> ${o.n}.I_ZkbNhI > div[data-test-id]) + ${o.c}:has(${o.d} + ${o.e}) ${o.f}:not(.I_ZkbNhI) {
       background-color: #fff !important;
       border-bottom: 1px solid #e0e4e9 !important;
-      & > div > div > ${i} > button.cdPFi_ZkbNhI.C_ZOHqTQ {
+      & > div > div > ${o.i} > button.cdPFi_ZkbNhI.C_ZOHqTQ {
         fill: inherit !important;
         color: inherit !important;
       }
