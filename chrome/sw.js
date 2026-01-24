@@ -3,7 +3,7 @@
 const myScript = {
   id: "ywm-content-script",
   js: ['content/content.js'],
-  css: ['content/content.css'],
+  css: ['content/content1.css'],
   persistAcrossSessions: false,
   matches: ["https://*.mail.yahoo.com/*"],
   runAt: "document_start"
