@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Wider mail view for Yahoo Mail",
-  "version": "2.3",
+  "version": "2.4",
   "description": "Various improvements/fixes for Yahoo Mail",
   "author": "def00111",
   "minimum_chrome_version": "116",
@@ -14,6 +14,10 @@
        "64": "icons/expand-64.png"
     }
   },
+  "web_accessible_resources": [{
+    "resources": ["content/content2.css"],
+    "matches": ["https://*.mail.yahoo.com/*"]
+  }],
   "options_ui": {
     "page": "options.html",
     "open_in_tab": false
